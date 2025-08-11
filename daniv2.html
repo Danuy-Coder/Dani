@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Finance Dashboard</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body{
+            font-family: 'Poppins', sans-serif;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #1e293b; }
+        ::-webkit-scrollbar-thumb { background: #4f46e5; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #6366f1; }
+        /* Transisi sidebar */
+        .sidebar { transition: transform 0.3s ease-in-out; }
+    </style>
+</head>
+<body class="bg-slate-900 text-white font-sans">
+
+    <div class="flex h-screen overflow-hidden">
+        <aside id="sidebar" class="sidebar bg-slate-800 text-white w-64 h-full fixed lg:relative z-30 transform -translate-x-full lg:translate-x-0 flex flex-col shadow-2xl lg:rounded-r-xl">
+    <div class="p-5 bg-slate-900 flex items-center gap-4 lg:rounded-tr-xl">
+        <i class="fas fa-wallet text-3xl text-indigo-400"></i>
+        <div>
+            <h1 class="text-xl font-bold text-white">Finance App</h1>
+            <p class="text-xs text-gray-400">Your Personal Manager</p>
+        </div>
+        <button id="close-sidebar-btn" class="lg:hidden text-2xl ml-auto">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <nav class="mt-4 flex-grow overflow-y-auto">
+        <div class="px-5 mb-4">
+            <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Keuangan</h3>
+            <div class="mt-2 space-y-1">
+                <a href="#" class="menu-item active flex items-center py-2 px-3 text-gray-300 hover:bg-slate-700 hover:text-white rounded-md" data-page="dashboard">
+                    <i class="fas fa-tachometer-alt w-6"></i> Dashboard
+                </a>
+                <a href="#" class="menu-item flex items-center py-2 px-3 text-gray-300 hover:bg-slate-700 hover:text-white rounded-md" data-page="absen">
+                    <i class="fas fa-user-check w-6"></i> Absen
+                </a>
+                <a href="#" class="menu-item flex items-center py-2 px-3 text-gray-300 hover:bg-slate-700 hover:text-white rounded-md" data-page="kalkulator">
+                    <i class="fas fa-calculator w-6"></i> Kalkulator
+                </a>
+                <a href="#" class="menu-item flex items-center py-2 px-3 text-gray-300 hover:bg-slate-700 hover:text-white rounded-md" data-page="tabungan">
+                    <i class="fas fa-piggy-bank w-6"></i> Tabungan
+                </a>
+            </div>
+        </div>
+        <div class="px-5 mb-4">
+            <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider">AI</h3>
+            <div class="mt-2 space-y-1">
+                <a href="#" class="menu-item flex items-center py-2 px-3 text-gray-300 hover:bg-slate-700 hover:text-white rounded-md" data-page="chat-ai">
+                    <i class="fas fa-robot w-6"></i> Chat AI
+                </a>
+                <a href="#" class="flex items-center py-2 px-3 text-gray-300 rounded-md opacity-50 cursor-not-allowed" title="Segera Hadir">
+                    <i class="fas fa-image w-6"></i> Image Generate
+                    <span class="ml-auto text-xs bg-yellow-600 text-white px-2 py-0.5 rounded-full">Soon</span>
+                </a>
+            </div>
+        </div>
+        <div class="px-5 mb-4">
+            <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Download</h3>
+            <div class="mt-2 space-y-1">
+                <a href="#" class="flex items-center py-2 px-3 text-gray-300 rounded-md opacity-50 cursor-not-allowed" title="Segera Hadir">
+                    <i class="fab fa-youtube w-6"></i> Youtube
+                    <span class="ml-auto text-xs bg-yellow-600 text-white px-2 py-0.5 rounded-full">Soon</span>
+                </a>
+                 <a href="#" class="flex items-center py-2 px-3 text-gray-300 rounded-md opacity-50 cursor-not-allowed" title="Segera Hadir">
+                    <i class="fab fa-pinterest w-6"></i> Pinterest
+                    <span class="ml-auto text-xs bg-yellow-600 text-white px-2 py-0.5 rounded-full">Soon</span>
+                </a>
+                 <a href="#" class="flex items-center py-2 px-3 text-gray-300 rounded-md opacity-50 cursor-not-allowed" title="Segera Hadir">
+                    <i class="fab fa-tiktok w-6"></i> Tiktok
+                    <span class="ml-auto text-xs bg-yellow-600 text-white px-2 py-0.5 rounded-full">Soon</span>
+                </a>
+            </div>
+        </div>
+        <div class="px-5 mb-4">
+            <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Other</h3>
+            <div class="mt-2 space-y-1">
+                <a href="#" class="menu-item flex items-center py-2 px-3 text-gray-300 hover:bg-slate-700 hover:text-white rounded-md" data-page="play-musik">
+                    <i class="fas fa-music w-6"></i> Play Musik
+                </a>
+            </div>
+        </div>
+    </nav>
+    
+    <div id="mini-player" class="p-4 mt-auto border-t border-slate-700 bg-slate-900 lg:rounded-br-xl hidden">
+        <p class="text-sm text-gray-400">Now Playing</p>
+        <p id="mini-player-track-name" class="font-semibold text-white truncate">...</p>
+        <div class="flex items-center justify-between mt-2 text-xl">
+            <button id="mini-player-prev-btn" class="text-gray-400 hover:text-white"><i class="fas fa-step-backward"></i></button>
+            <button id="mini-player-play-pause-btn" class="w-10 h-10 flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 rounded-full text-white text-lg">
+                <i class="fas fa-play"></i>
+            </button>
+            <button id="mini-player-next-btn" class="text-gray-400 hover:text-white"><i class="fas fa-step-forward"></i></button>
+        </div>
+    </div>
+</aside>
+
+
+
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <header class="bg-slate-800 shadow-md p-4 flex items-center">
+                <button id="open-sidebar-btn" class="lg:hidden text-2xl mr-4">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h2 id="page-title" class="text-xl font-semibold">Dashboard</h2>
+            </header>
+
+            <main class="flex-1 overflow-x-hidden overflow-y-auto bg-slate-900 p-6">
+                
+                <div id="page-dashboard" class="page animate__animated animate__fadeIn">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                        <div class="bg-slate-800 p-5 rounded-lg shadow-lg bg-gradient-to-br from-green-600 to-green-800">
+                            <h3 class="text-lg font-semibold">Total Pemasukan Bulan Ini</h3>
+                            <p id="total-pemasukan-rekap" class="text-3xl font-bold mt-2">Rp 0</p>
+                        </div>
+                        <div class="bg-slate-800 p-5 rounded-lg shadow-lg bg-gradient-to-br from-red-600 to-red-800">
+                            <h3 class="text-lg font-semibold">Total Pengeluaran Bulan Ini</h3>
+                            <p id="total-pengeluaran-rekap" class="text-3xl font-bold mt-2">Rp 0</p>
+                        </div>
+                        <div class="bg-slate-800 p-5 rounded-lg shadow-lg bg-gradient-to-br from-blue-600 to-blue-800">
+                            <h3 class="text-lg font-semibold">Saldo Akhir Bulan Ini</h3>
+                            <p id="saldo-akhir-rekap" class="text-3xl font-bold mt-2">Rp 0</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                        <div class="lg:col-span-1 bg-slate-800 p-6 rounded-lg shadow-lg">
+                            <h3 class="text-xl font-semibold mb-4">Tambah Transaksi</h3>
+                            <form id="transaction-form">
+                                <div class="mb-4">
+                                    <label for="date" class="block mb-2 text-sm font-medium">Tanggal</label>
+                                    <input type="date" id="date" class="w-full bg-slate-700 border border-slate-600 rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500" required>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="category" class="block mb-2 text-sm font-medium">Kategori</label>
+                                    <input type="text" id="category" placeholder="Contoh: Makanan, Gaji" class="w-full bg-slate-700 border border-slate-600 rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500" required>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="type" class="block mb-2 text-sm font-medium">Tipe</label>
+                                    <select id="type" class="w-full bg-slate-700 border border-slate-600 rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500">
+                                        <option value="pengeluaran">Pengeluaran</option>
+                                        <option value="pemasukan">Pemasukan</option>
+                                    </select>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="amount" class="block mb-2 text-sm font-medium">Jumlah (Rp)</label>
+                                    <input type="number" id="amount" placeholder="50000" class="w-full bg-slate-700 border border-slate-600 rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500" required>
+                                </div>
+                                <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300">
+                                    <i class="fas fa-plus-circle"></i> Tambah
+                                </button>
+                            </form>
+                        </div>
+
+                        <div class="lg:col-span-2 bg-slate-800 p-6 rounded-lg shadow-lg">
+    <h3 class="text-xl font-semibold mb-4">...</h3>
+    <div class="relative h-80"> 
+        <canvas id="trend-bar-chart"></canvas>
+    </div>
+</div>
+
+                    </div>
+                    
+                    <div class="bg-slate-800 p-6 rounded-lg shadow-lg mb-6">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-xl font-semibold">Riwayat Transaksi Bulan Ini</h3>
+                            <div>
+                                <button id="export-json" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg text-sm mr-2"><i class="fas fa-file-code"></i> JSON</button>
+                                <button id="export-csv" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg text-sm"><i class="fas fa-file-csv"></i> CSV</button>
+                            </div>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm text-left">
+                                <thead class="text-xs text-gray-300 uppercase bg-slate-700">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3">Tanggal</th>
+                                        <th scope="col" class="px-6 py-3">Kategori</th>
+                                        <th scope="col" class="px-6 py-3">Tipe</th>
+                                        <th scope="col" class="px-6 py-3">Jumlah</th>
+                                        <th scope="col" class="px-6 py-3">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="transaction-table-body">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-slate-800 p-6 rounded-lg shadow-lg">
+                            <h3 class="text-xl font-semibold mb-4">Gaji per Bulan</h3>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-sm text-left">
+                                    <thead class="text-xs text-gray-300 uppercase bg-slate-700">
+                                        <tr>
+                                            <th scope="col" class="px-6 py-3">Bulan & Tahun</th>
+                                            <th scope="col" class="px-6 py-3">Jumlah Gaji (Rp)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="salary-table-body">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-slate-800 p-6 rounded-lg shadow-lg">
+                            <h3 class="text-xl font-semibold mb-4">Catatan Motivasi / Wishlist</h3>
+                            <textarea id="motivation-notes" class="w-full h-36 bg-slate-700 border border-slate-600 rounded-lg p-2.5 focus:ring-blue-500 focus:border-blue-500" placeholder="Tuliskan tujuan keuanganmu di sini..."></textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="page-absen" class="page hidden animate__animated animate__fadeIn">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-slate-800 p-6 rounded-lg shadow-lg text-center">
+                            <h3 class="text-2xl font-bold mb-4">Absensi Harian</h3>
+                            <i class="fas fa-fingerprint text-7xl text-indigo-400 mb-4"></i>
+                            <p id="absen-status" class="mb-4 text-lg">Memeriksa status absensi...</p>
+                            <button id="absen-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 text-xl disabled:bg-slate-600 disabled:cursor-not-allowed">
+                                Absen Sekarang
+                            </button>
+                            <div class="text-sm mt-4 text-gray-400">
+                                <p><i class="fas fa-sun"></i> Absen sebelum jam 14:00 dapat <strong>Rp 70.000</strong></p>
+                                <p><i class="fas fa-moon"></i> Absen setelah jam 14:00 dapat <strong>Rp 50.000</strong></p>
+                            </div>
+                        </div>
+                        <div class="bg-slate-800 p-6 rounded-lg shadow-lg">
+                            <h3 class="text-xl font-semibold mb-4">Riwayat Absensi</h3>
+                             <div class="overflow-y-auto max-h-96">
+                                <table class="w-full text-sm text-left">
+                                    <thead class="text-xs text-gray-300 uppercase bg-slate-700 sticky top-0">
+                                        <tr>
+                                            <th scope="col" class="px-6 py-3">Tanggal</th>
+                                            <th scope="col" class="px-6 py-3">Jam</th>
+                                            <th scope="col" class="px-6 py-3">Insentif</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="absen-history-body">
+                                        </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="page-kalkulator" class="page hidden animate__animated animate__fadeIn">
+                    <div class="bg-slate-800 p-6 rounded-lg shadow-lg">
+                        <h3 class="text-xl font-semibold mb-4">Kalkulator Rencana Pengeluaran</h3>
+                        <div id="calculator-items"></div>
+                        <button id="add-calculator-item" class="mt-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg">
+                            <i class="fas fa-plus"></i> Tambah Item
+                        </button>
+                        <hr class="my-4 border-slate-600">
+                        <div class="text-right">
+                            <span class="text-lg font-semibold">Total Rencana:</span>
+                            <span id="calculator-total" class="text-2xl font-bold ml-2">Rp 0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="page-tabungan" class="page hidden animate__animated animate__fadeIn">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div class="bg-slate-800 p-6 rounded-lg shadow-lg">
+                            <h3 class="text-xl font-semibold mb-4">Catatan Tabungan</h3>
+                            <form id="savings-form" class="mb-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <input type="number" id="savings-amount" placeholder="Jumlah Setoran" class="bg-slate-700 p-2 rounded" required>
+                                    <input type="text" id="savings-note" placeholder="Keterangan" class="bg-slate-700 p-2 rounded">
+                                </div>
+                                <button type="submit" class="mt-2 w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg">Setor</button>
+                            </form>
+                            <div class="overflow-y-auto max-h-60">
+                                <table class="w-full text-sm">
+                                    <thead class="text-xs text-gray-300 uppercase bg-slate-700">
+                                        <tr><th class="px-4 py-2">Tanggal</th><th class="px-4 py-2">Jumlah</th><th class="px-4 py-2">Keterangan</th></tr>
+                                    </thead>
+                                    <tbody id="savings-table-body"></tbody>
+                                </table>
+                            </div>
+                            <p class="text-right mt-4 text-xl font-bold">Total Tabungan: <span id="total-savings" class="text-green-400">Rp 0</span></p>
+                        </div>
+                        
+                        <div class="bg-slate-800 p-6 rounded-lg shadow-lg">
+                            <h3 class="text-xl font-semibold mb-4">Catatan Penarikan</h3>
+                            <form id="withdrawal-form" class="mb-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <input type="number" id="withdrawal-amount" placeholder="Jumlah Penarikan" class="bg-slate-700 p-2 rounded" required>
+                                    <input type="text" id="withdrawal-reason" placeholder="Alasan" class="bg-slate-700 p-2 rounded">
+                                </div>
+                                <button type="submit" class="mt-2 w-full bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded-lg">Tarik</button>
+                            </form>
+                            <div class="overflow-y-auto max-h-60">
+                                <table class="w-full text-sm">
+                                    <thead class="text-xs text-gray-300 uppercase bg-slate-700">
+                                        <tr><th class="px-4 py-2">Tanggal</th><th class="px-4 py-2">Jumlah</th><th class="px-4 py-2">Alasan</th></tr>
+                                    </thead>
+                                    <tbody id="withdrawal-table-body"></tbody>
+                                </table>
+                            </div>
+                            <p class="text-right mt-4 text-xl font-bold">Total Penarikan: <span id="total-withdrawals" class="text-yellow-400">Rp 0</span></p>
+                        </div>
+                    </div>
+                    <div class="mt-6 bg-slate-800 p-6 rounded-lg shadow-lg flex justify-between items-center">
+                        <p class="text-2xl font-bold">Saldo Tabungan Akhir: <span id="final-savings-balance" class="text-blue-400">Rp 0</span></p>
+                        <button id="reset-savings-btn" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg">
+                            <i class="fas fa-trash"></i> Reset Data Tabungan
+                        </button>
+                    </div>
+                </div>
+                <div id="page-chat-ai" class="page hidden animate__animated animate__fadeIn">
+    <div class="bg-slate-800 rounded-lg shadow-lg h-[80vh] flex flex-col">
+        <div class="p-4 border-b border-slate-700 flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <i class="fas fa-robot text-2xl text-indigo-400"></i>
+                <div>
+                    <h3 class="text-lg font-semibold">Asisten Keuangan AI (Gemini)</h3>
+                    <p class="text-sm text-gray-400">Online</p>
+                </div>
+            </div>
+            <button id="api-key-btn" class="text-gray-400 hover:text-white transition-colors" title="Atur API Key Gemini">
+                <i class="fas fa-cog text-xl"></i>
+            </button>
+        </div>
+        
+        <div id="chat-window" class="flex-grow p-6 overflow-y-auto space-y-6">
+            </div>
+        
+        <div class="p-4 border-t border-slate-700">
+            <form id="chat-form" class="flex items-center gap-4">
+                <input type="text" id="chat-input" class="flex-1 bg-slate-700 border border-slate-600 rounded-lg p-3 focus:ring-blue-500 focus:border-blue-500" placeholder="Ketik pertanyaan Anda di sini..." autocomplete="off">
+                <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-5 rounded-lg transition duration-300">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+ <div id="page-play-musik" class="page hidden animate__animated animate__fadeIn">
+    <div class="bg-slate-800 rounded-lg shadow-lg p-6">
+        <h3 class="text-2xl font-bold mb-4">Pemutar Musik Lokal</h3>
+
+        <div class="mb-6">
+            <button id="modern-folder-picker" class="cursor-pointer inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300">
+                <i class="fas fa-folder-open"></i> Pilih Folder Musik
+            </button>
+            <p class="text-sm text-gray-400 mt-2">Gunakan fitur ini untuk memilih folder musik Anda di Chrome.</p>
+        </div>
+
+        <div id="player-container" class="hidden bg-slate-900 p-6 rounded-lg text-center">
+            <i class="fas fa-headphones-alt text-5xl text-indigo-400 mb-4"></i>
+            <p class="text-gray-400">Now Playing</p>
+            <p id="current-track-info" class="text-2xl font-semibold truncate">Pilih musik untuk diputar</p>
+            <div class="flex items-center justify-center gap-8 text-4xl mt-6">
+                <button id="prev-btn" class="text-gray-400 hover:text-white"><i class="fas fa-step-backward"></i></button>
+                <button id="play-pause-btn" class="w-20 h-20 flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 rounded-full text-white text-5xl shadow-lg">
+                    <i class="fas fa-play"></i>
+                </button>
+                <button id="next-btn" class="text-gray-400 hover:text-white"><i class="fas fa-step-forward"></i></button>
+            </div>
+            <audio id="audio-player" class="w-full hidden"></audio>
+        </div>
+
+        <div id="playlist-container" class="mt-6">
+            <h4 class="text-xl font-semibold mb-2">Playlist</h4>
+            <div id="playlist" class="max-h-60 overflow-y-auto space-y-2 bg-slate-900 p-3 rounded-lg">
+                <p class="text-gray-500 text-center">Pilih sebuah folder untuk menampilkan playlist.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+            </main>
+        </div>
+    </div>
+
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        // =================================================================
+        // SETUP & INITIALIZATION
+        // =================================================================
+        
+        const sidebar = document.getElementById('sidebar');
+        const openSidebarBtn = document.getElementById('open-sidebar-btn');
+        const closeSidebarBtn = document.getElementById('close-sidebar-btn');
+        const menuItems = document.querySelectorAll('.menu-item');
+        const pages = document.querySelectorAll('.page');
+        const pageTitle = document.getElementById('page-title');
+        
+        let trendBarChartInstance = null;
+
+        // =================================================================
+        // HELPER FUNCTIONS (UTILITIES)
+        // =================================================================
+
+        const formatRupiah = (number) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(number);
+        const getData = (key, defaultValue = []) => JSON.parse(localStorage.getItem(key)) || defaultValue;
+        const saveData = (key, data) => localStorage.setItem(key, JSON.stringify(data));
+        const getTodayDateString = () => new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+
+        // =================================================================
+        // SIDEBAR & PAGE NAVIGATION
+        // =================================================================
+
+        openSidebarBtn.addEventListener('click', () => sidebar.classList.remove('-translate-x-full'));
+        closeSidebarBtn.addEventListener('click', () => sidebar.classList.add('-translate-x-full'));
+
+        menuItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                menuItems.forEach(i => i.classList.remove('active', 'bg-slate-700'));
+                item.classList.add('active', 'bg-slate-700');
+
+                const pageId = item.getAttribute('data-page');
+                pages.forEach(page => {
+                    page.classList.toggle('hidden', page.id !== `page-${pageId}`);
+                });
+                
+                pageTitle.textContent = item.textContent.trim();
+                
+                if (window.innerWidth < 1024) {
+                    sidebar.classList.add('-translate-x-full');
+                }
+            });
+        });
+
+        // =================================================================
+        // DASHBOARD LOGIC
+        // =================================================================
+        
+        const transactionForm = document.getElementById('transaction-form');
+        const transactionTableBody = document.getElementById('transaction-table-body');
+        const motivationNotes = document.getElementById('motivation-notes');
+        const exportJsonBtn = document.getElementById('export-json');
+        const exportCsvBtn = document.getElementById('export-csv');
+
+        const renderDashboard = () => {
+            renderTransactionTable();
+            renderDashboardRecap();
+            renderCharts();
+            renderSalaryTable();
+            loadMotivationNotes();
+        };
+
+        const renderTransactionTable = () => {
+            const transactions = getData('transactions');
+            transactionTableBody.innerHTML = '';
+            const now = new Date();
+            const currentMonthTransactions = transactions.filter(t => {
+                const tDate = new Date(t.date);
+                return tDate.getMonth() === now.getMonth() && tDate.getFullYear() === now.getFullYear();
+            });
+
+            if (currentMonthTransactions.length === 0) {
+                 transactionTableBody.innerHTML = `<tr><td colspan="5" class="text-center py-4">Belum ada transaksi bulan ini.</td></tr>`;
+                 return;
+            }
+
+            currentMonthTransactions.sort((a, b) => new Date(b.date) - new Date(a.date)).forEach(trx => {
+                const row = document.createElement('tr');
+                row.className = 'bg-slate-800 border-b border-slate-700 hover:bg-slate-600';
+                row.innerHTML = `
+                    <td class="px-6 py-4">${trx.date}</td>
+                    <td class="px-6 py-4">${trx.category}</td>
+                    <td class="px-6 py-4">
+                        <span class="px-2 py-1 rounded-full text-xs font-semibold ${trx.type === 'pemasukan' ? 'bg-green-500 text-green-900' : 'bg-red-500 text-red-900'}">
+                            ${trx.type}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 font-medium">${formatRupiah(trx.amount)}</td>
+                    <td class="px-6 py-4">
+                        <button class="text-red-500 hover:text-red-700 delete-trx-btn" data-id="${trx.id}"><i class="fas fa-trash-alt"></i></button>
+                    </td>
+                `;
+                transactionTableBody.appendChild(row);
+            });
+        };
+        
+        transactionForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const transactions = getData('transactions');
+            const newTransaction = {
+                id: Date.now(),
+                date: document.getElementById('date').value,
+                category: document.getElementById('category').value,
+                type: document.getElementById('type').value,
+                amount: parseFloat(document.getElementById('amount').value),
+            };
+            transactions.push(newTransaction);
+            saveData('transactions', transactions);
+            transactionForm.reset();
+            document.getElementById('date').value = getTodayDateString();
+            
+            renderDashboard();
+            Swal.fire({
+                icon: 'success', title: 'Berhasil!', text: 'Transaksi baru telah ditambahkan.',
+                background: '#1e293b', color: '#fff', timer: 1500, showConfirmButton: false
+            });
+        });
+        
+        transactionTableBody.addEventListener('click', (e) => {
+            if (e.target.closest('.delete-trx-btn')) {
+                const trxId = parseInt(e.target.closest('.delete-trx-btn').getAttribute('data-id'));
+                Swal.fire({
+                    title: 'Anda yakin?', text: "Data transaksi ini akan dihapus permanen!", icon: 'warning',
+                    showCancelButton: true, confirmButtonColor: '#d33', cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Ya, hapus!', cancelButtonText: 'Batal', background: '#1e293b', color: '#fff'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        let transactions = getData('transactions');
+                        transactions = transactions.filter(t => t.id !== trxId);
+                        saveData('transactions', transactions);
+                        renderDashboard();
+                        Swal.fire({ title: 'Dihapus!', text: 'Transaksi telah dihapus.', icon: 'success', background: '#1e293b', color: '#fff' });
+                    }
+                });
+            }
+        });
+
+        const renderDashboardRecap = () => {
+            const transactions = getData('transactions');
+            const now = new Date();
+            const currentMonth = now.getMonth();
+            const currentYear = now.getFullYear();
+
+            const totalPemasukan = transactions
+                .filter(t => t.type === 'pemasukan' && new Date(t.date).getMonth() === currentMonth && new Date(t.date).getFullYear() === currentYear)
+                .reduce((sum, t) => sum + t.amount, 0);
+
+            const totalPengeluaran = transactions
+                .filter(t => t.type === 'pengeluaran' && new Date(t.date).getMonth() === currentMonth && new Date(t.date).getFullYear() === currentYear)
+                .reduce((sum, t) => sum + t.amount, 0);
+
+            document.getElementById('total-pemasukan-rekap').textContent = formatRupiah(totalPemasukan);
+            document.getElementById('total-pengeluaran-rekap').textContent = formatRupiah(totalPengeluaran);
+            document.getElementById('saldo-akhir-rekap').textContent = formatRupiah(totalPemasukan - totalPengeluaran);
+        };
+
+        const renderCharts = () => {
+            const transactions = getData('transactions');
+            const now = new Date();
+            
+            const trendData = { pemasukan: {}, pengeluaran: {} };
+            const monthLabels = [];
+            for (let i = 5; i >= 0; i--) {
+                const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+                const monthYear = d.toLocaleString('id-ID', { month: 'short', year: '2-digit' });
+                monthLabels.push(monthYear);
+                trendData.pemasukan[monthYear] = 0;
+                trendData.pengeluaran[monthYear] = 0;
+            }
+
+            transactions.forEach(t => {
+                const tDate = new Date(t.date);
+                const sixMonthsAgo = new Date(now.getFullYear(), now.getMonth() - 5, 1);
+                if (tDate >= sixMonthsAgo) {
+                    const monthYear = tDate.toLocaleString('id-ID', { month: 'short', year: '2-digit' });
+                    if(trendData[t.type] && trendData[t.type][monthYear] !== undefined){
+                        trendData[t.type][monthYear] += t.amount;
+                    }
+                }
+            });
+            
+            const barCtx = document.getElementById('trend-bar-chart').getContext('2d');
+            if (trendBarChartInstance) trendBarChartInstance.destroy();
+            trendBarChartInstance = new Chart(barCtx, {
+                type: 'bar',
+                data: {
+                    labels: monthLabels,
+                    datasets: [
+                        { label: 'Pemasukan', data: Object.values(trendData.pemasukan), backgroundColor: '#22c55e' },
+                        { label: 'Pengeluaran', data: Object.values(trendData.pengeluaran), backgroundColor: '#ef4444' }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    scales: {
+                        y: { ticks: { color: '#cbd5e1' }, grid: { color: '#334155' } },
+                        x: { ticks: { color: '#cbd5e1' }, grid: { color: '#334155' } }
+                    },
+                    plugins: { legend: { labels: { color: '#cbd5e1' } } }
+                }
+            });
+        };
+        
+        const salaryTableBody = document.getElementById('salary-table-body');
+        const renderSalaryTable = () => {
+            const salaries = getData('salaries', {});
+            salaryTableBody.innerHTML = '';
+            const now = new Date();
+            for (let i = 0; i < 6; i++) {
+                const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+                const monthKey = d.toISOString().slice(0, 7);
+                const monthName = d.toLocaleString('id-ID', { month: 'long', year: 'numeric' });
+                const salaryAmount = salaries[monthKey] || 0;
+
+                row = `
+                    <tr class="bg-slate-800 border-b border-slate-700">
+                        <td class="px-6 py-4">${monthName}</td>
+                        <td class="px-6 py-4">
+                            <input type="number" value="${salaryAmount}" data-month="${monthKey}" class="salary-input bg-slate-700 p-1 rounded w-full" placeholder="Input gaji">
+                        </td>
+                    </tr>
+                `;
+                salaryTableBody.innerHTML += row;
+            }
+        };
+        
+        salaryTableBody.addEventListener('change', (e) => {
+            if (e.target.classList.contains('salary-input')) {
+                const monthKey = e.target.dataset.month;
+                const amount = parseFloat(e.target.value) || 0;
+                const salaries = getData('salaries', {});
+                salaries[monthKey] = amount;
+                saveData('salaries', salaries);
+            }
+        });
+
+        const loadMotivationNotes = () => motivationNotes.value = getData('motivationNotes', '');
+        motivationNotes.addEventListener('blur', () => saveData('motivationNotes', motivationNotes.value));
+        
+        const exportData = (format) => {
+            const transactions = getData('transactions');
+            const now = new Date();
+            const filename = `transaksi-${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+            if (format === 'json') {
+                saveAs(new Blob([JSON.stringify(transactions, null, 2)], {type: "application/json;charset=utf-8"}), `${filename}.json`);
+            } else if (format === 'csv') {
+                let csvContent = "Tanggal,Kategori,Tipe,Jumlah\n" + transactions.map(t => `${t.date},${t.category},${t.type},${t.amount}`).join("\n");
+                saveAs(new Blob([csvContent], {type: "text/csv;charset=utf-8;"}), `${filename}.csv`);
+            }
+        };
+        exportJsonBtn.addEventListener('click', () => exportData('json'));
+        exportCsvBtn.addEventListener('click', () => exportData('csv'));
+
+        // =================================================================
+        // ABSEN LOGIC
+        // =================================================================
+        
+        const absenBtn = document.getElementById('absen-btn');
+        const absenStatus = document.getElementById('absen-status');
+        const absenHistoryBody = document.getElementById('absen-history-body');
+
+        const initializeAbsenPage = () => {
+            const attendance = getData('attendance', []);
+            const today = getTodayDateString();
+            const hasAttendedToday = attendance.some(a => a.date === today);
+
+            if (hasAttendedToday) {
+                absenStatus.textContent = 'Anda sudah absen hari ini. Kembali lagi besok!';
+                absenBtn.disabled = true;
+            } else {
+                absenStatus.textContent = 'Anda belum absen hari ini. Silakan tekan tombol di bawah.';
+                absenBtn.disabled = false;
+            }
+            renderAbsenHistory();
+        };
+
+        const renderAbsenHistory = () => {
+            const attendance = getData('attendance', []);
+            absenHistoryBody.innerHTML = '';
+            if (attendance.length === 0) {
+                 absenHistoryBody.innerHTML = `<tr><td colspan="3" class="text-center py-4">Belum ada riwayat absensi.</td></tr>`;
+                 return;
+            }
+            attendance.sort((a,b) => new Date(b.fullDate) - new Date(a.fullDate)).forEach(item => {
+                absenHistoryBody.innerHTML += `
+                    <tr class="border-b border-slate-700">
+                        <td class="px-6 py-4">${item.date}</td>
+                        <td class="px-6 py-4">${item.time}</td>
+                        <td class="px-6 py-4 font-medium text-green-400">${formatRupiah(item.amount)}</td>
+                    </tr>
+                `;
+            });
+        };
+
+        absenBtn.addEventListener('click', () => {
+            const now = new Date();
+            const currentHour = now.getHours(); // 0-23
+            const reward = currentHour < 14 ? 70000 : 50000;
+            const today = getTodayDateString();
+
+            // Add to attendance history
+            const attendance = getData('attendance', []);
+            const newAttendance = {
+                date: today,
+                time: now.toLocaleTimeString('id-ID'),
+                amount: reward,
+                fullDate: now.toISOString()
+            };
+            attendance.push(newAttendance);
+            saveData('attendance', attendance);
+            
+            // Add to transactions
+            const transactions = getData('transactions', []);
+            const newTransaction = {
+                id: Date.now(),
+                date: today,
+                category: 'Insentif Absen',
+                type: 'pemasukan',
+                amount: reward
+            };
+            transactions.push(newTransaction);
+            saveData('transactions', transactions);
+
+            Swal.fire({
+                icon: 'success',
+                title: 'Absen Berhasil!',
+                html: `Anda mendapatkan insentif sebesar <strong>${formatRupiah(reward)}</strong>. <br>Pemasukan telah ditambahkan ke dashboard.`,
+                background: '#1e293b',
+                color: '#fff'
+            });
+
+            initializeAbsenPage(); // Update UI
+            renderDashboard(); // Update dashboard data
+        });
+
+
+        // =================================================================
+        // KALKULATOR LOGIC
+        // =================================================================
+        
+        const addCalculatorItemBtn = document.getElementById('add-calculator-item');
+        const calculatorItemsContainer = document.getElementById('calculator-items');
+        const calculatorTotalEl = document.getElementById('calculator-total');
+        
+        const addCalculatorItem = () => {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'flex items-center gap-2 mb-2 animate__animated animate__fadeIn';
+            itemDiv.innerHTML = `
+                <input type="text" placeholder="Nama item" class="flex-1 bg-slate-700 p-2 rounded">
+                <input type="number" placeholder="Jumlah (Rp)" class="calculator-item-amount w-1/3 bg-slate-700 p-2 rounded">
+                <button class="text-red-500 hover:text-red-700 remove-calc-item-btn"><i class="fas fa-minus-circle"></i></button>
+            `;
+            calculatorItemsContainer.appendChild(itemDiv);
+        };
+        
+        const calculateTotal = () => {
+            const amounts = document.querySelectorAll('.calculator-item-amount');
+            const total = Array.from(amounts).reduce((sum, input) => sum + (parseFloat(input.value) || 0), 0);
+            calculatorTotalEl.textContent = formatRupiah(total);
+        };
+        
+        addCalculatorItemBtn.addEventListener('click', addCalculatorItem);
+        
+        calculatorItemsContainer.addEventListener('input', (e) => e.target.classList.contains('calculator-item-amount') && calculateTotal());
+        
+        calculatorItemsContainer.addEventListener('click', (e) => {
+            if (e.target.closest('.remove-calc-item-btn')) {
+                e.target.closest('.flex').remove();
+                calculateTotal();
+            }
+        });
+
+
+        // =================================================================
+        // TABUNGAN LOGIC
+        // =================================================================
+        
+        const savingsForm = document.getElementById('savings-form');
+        const withdrawalForm = document.getElementById('withdrawal-form');
+        const savingsTableBody = document.getElementById('savings-table-body');
+        const withdrawalTableBody = document.getElementById('withdrawal-table-body');
+        const totalSavingsEl = document.getElementById('total-savings');
+        const totalWithdrawalsEl = document.getElementById('total-withdrawals');
+        const finalSavingsBalanceEl = document.getElementById('final-savings-balance');
+        const resetSavingsBtn = document.getElementById('reset-savings-btn');
+        
+        const renderSavings = () => {
+            const savings = getData('savings');
+            savingsTableBody.innerHTML = '';
+            savings.sort((a,b) => new Date(b.date) - new Date(a.date)).forEach(item => {
+                savingsTableBody.innerHTML += `<tr class="border-b border-slate-700"><td class="px-4 py-2">${item.date}</td><td class="px-4 py-2">${formatRupiah(item.amount)}</td><td class="px-4 py-2">${item.note}</td></tr>`;
+            });
+            const totalSavings = savings.reduce((sum, item) => sum + item.amount, 0);
+            totalSavingsEl.textContent = formatRupiah(totalSavings);
+            
+            const withdrawals = getData('withdrawals');
+            withdrawalTableBody.innerHTML = '';
+            withdrawals.sort((a,b) => new Date(b.date) - new Date(a.date)).forEach(item => {
+                withdrawalTableBody.innerHTML += `<tr class="border-b border-slate-700"><td class="px-4 py-2">${item.date}</td><td class="px-4 py-2">${formatRupiah(item.amount)}</td><td class="px-4 py-2">${item.reason}</td></tr>`;
+            });
+            const totalWithdrawals = withdrawals.reduce((sum, item) => sum + item.amount, 0);
+            totalWithdrawalsEl.textContent = formatRupiah(totalWithdrawals);
+            
+            finalSavingsBalanceEl.textContent = formatRupiah(totalSavings - totalWithdrawals);
+        };
+        
+        savingsForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const savings = getData('savings');
+            savings.push({ date: new Date().toLocaleDateString('id-ID'), amount: parseFloat(document.getElementById('savings-amount').value), note: document.getElementById('savings-note').value });
+            saveData('savings', savings);
+            savingsForm.reset();
+            renderSavings();
+        });
+        
+        withdrawalForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const withdrawals = getData('withdrawals');
+            withdrawals.push({ date: new Date().toLocaleDateString('id-ID'), amount: parseFloat(document.getElementById('withdrawal-amount').value), reason: document.getElementById('withdrawal-reason').value });
+            saveData('withdrawals', withdrawals);
+            withdrawalForm.reset();
+            renderSavings();
+        });
+        
+        resetSavingsBtn.addEventListener('click', () => {
+            Swal.fire({
+                title: 'Reset Data Tabungan?', text: "Semua data setoran dan penarikan akan dihapus permanen.", icon: 'error',
+                showCancelButton: true, confirmButtonColor: '#d33', cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, reset!', cancelButtonText: 'Batal', background: '#1e293b', color: '#fff'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    saveData('savings', []);
+                    saveData('withdrawals', []);
+                    renderSavings();
+                    Swal.fire({ title: 'Berhasil!', text: 'Data tabungan telah direset.', icon: 'success', background: '#1e293b', color: '#fff' });
+                }
+            });
+        });
+        
+ // GANTI SELURUH BLOK "CHAT AI LOGIC" ANDA DENGAN KODE INI
+
+// =================================================================
+// CHAT AI LOGIC (with Gemini API)
+// =================================================================
+
+const chatWindow = document.getElementById('chat-window');
+const chatForm = document.getElementById('chat-form');
+const chatInput = document.getElementById('chat-input');
+const apiKeyBtn = document.getElementById('api-key-btn');
+
+// Fungsi untuk mengambil API Key dari LocalStorage
+const getApiKey = () => getData('geminiApiKey', null);
+
+// Fungsi untuk meminta & menyimpan API Key
+const promptForApiKey = () => {
+    Swal.fire({
+        title: 'Masukkan API Key Gemini Anda',
+        input: 'password',
+        inputValue: getApiKey() || '',
+        inputPlaceholder: 'Masukkan API Key Anda di sini',
+        inputAttributes: {
+            autocapitalize: 'off',
+            autocorrect: 'off'
+        },
+        showCancelButton: true,
+        confirmButtonText: 'Simpan',
+        cancelButtonText: 'Batal',
+        showLoaderOnConfirm: false,
+        background: '#1e293b',
+        color: '#fff',
+        preConfirm: (key) => {
+            if (!key) {
+                Swal.showValidationMessage(`API Key tidak boleh kosong`);
+            }
+            return key;
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            saveData('geminiApiKey', result.value);
+            Swal.fire({
+                title: 'Berhasil!',
+                text: 'API Key Anda telah disimpan dengan aman di browser Anda.',
+                icon: 'success',
+                background: '#1e293b',
+                color: '#fff'
+            });
+        }
+    });
+};
+
+apiKeyBtn.addEventListener('click', promptForApiKey);
+
+// Fungsi untuk menampilkan pesan "AI sedang mengetik..."
+const showAiTyping = (show = true) => {
+    let typingIndicator = document.getElementById('ai-typing-indicator');
+    if (show) {
+        if (!typingIndicator) {
+            typingIndicator = document.createElement('div');
+            typingIndicator.id = 'ai-typing-indicator';
+            typingIndicator.className = 'flex items-end gap-3 justify-start';
+            typingIndicator.innerHTML = `
+                <div class="max-w-md p-3 rounded-xl bg-slate-700 text-gray-300 rounded-bl-none">
+                    <div class="flex items-center justify-center space-x-1">
+                        <div class="w-2 h-2 bg-gray-400 rounded-full animate-pulse"></div>
+                        <div class="w-2 h-2 bg-gray-400 rounded-full animate-pulse" style="animation-delay: 0.2s;"></div>
+                        <div class="w-2 h-2 bg-gray-400 rounded-full animate-pulse" style="animation-delay: 0.4s;"></div>
+                    </div>
+                </div>`;
+            chatWindow.appendChild(typingIndicator);
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
+    } else {
+        if (typingIndicator) {
+            typingIndicator.remove();
+        }
+    }
+};
+
+// Fungsi untuk menampilkan semua pesan di jendela chat
+const renderChatHistory = () => {
+    const chatHistory = getData('chatHistory', [{
+        role: 'model',
+        text: 'Halo! Saya adalah asisten keuangan AI berbasis Gemini. Sebelum mulai, pastikan Anda sudah memasukkan API Key dengan menekan ikon gerigi di pojok kanan atas.'
+    }]);
+    
+    chatWindow.innerHTML = '';
+    
+    chatHistory.forEach(message => {
+        const messageWrapper = document.createElement('div');
+        messageWrapper.className = `flex items-end gap-3 ${message.role === 'user' ? 'justify-end' : 'justify-start'}`;
+        
+        const messageBubble = document.createElement('div');
+        messageBubble.className = `max-w-2xl p-3 rounded-xl ${message.role === 'user' ? 'bg-blue-600 text-white rounded-br-none' : 'bg-slate-700 text-gray-300 rounded-bl-none'}`;
+        messageBubble.textContent = message.text;
+        
+        messageWrapper.appendChild(messageBubble);
+        chatWindow.appendChild(messageWrapper);
+    });
+    
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+};
+
+// Fungsi untuk menghasilkan balasan dari AI via API
+const getAiResponse = async () => {
+    const apiKey = getApiKey();
+    const chatHistory = getData('chatHistory', []);
+    
+    // Format histori untuk API Gemini
+    const contents = chatHistory
+        .filter(msg => msg.text) // Pastikan hanya pesan dengan teks yang dikirim
+        .map(msg => ({
+            role: msg.role,
+            parts: [{ text: msg.text }]
+        }));
+    
+    showAiTyping(true);
+
+    try {
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ contents })
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error.message || 'Terjadi kesalahan pada API.');
+        }
+
+        const data = await response.json();
+        const aiText = data.candidates[0].content.parts[0].text;
+        
+        chatHistory.push({ role: 'model', text: aiText });
+        saveData('chatHistory', chatHistory);
+
+    } catch (error) {
+        console.error("Error calling Gemini API:", error);
+        chatHistory.push({ role: 'model', text: `Error: ${error.message}. Pastikan API Key Anda valid dan coba lagi.` });
+        saveData('chatHistory', chatHistory);
+    } finally {
+        showAiTyping(false);
+        renderChatHistory();
+    }
+};
+
+// Event listener untuk form chat
+chatForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const userInput = chatInput.value.trim();
+
+    if (!getApiKey()) {
+        Swal.fire({
+            title: 'API Key Diperlukan',
+            text: 'Silakan masukkan API Key Gemini Anda terlebih dahulu dengan menekan ikon gerigi.',
+            icon: 'warning',
+            background: '#1e293b',
+            color: '#fff'
+        });
+        return;
+    }
+    
+    if (userInput) {
+        const chatHistory = getData('chatHistory', []);
+        chatHistory.push({ role: 'user', text: userInput });
+        saveData('chatHistory', chatHistory);
+        renderChatHistory();
+        
+        chatInput.value = '';
+        getAiResponse();
+    }
+});
+
+// Panggil renderChatHistory saat aplikasi pertama dimuat
+renderChatHistory();
+
+ // TAMBAHKAN BLOK INI SEBELUM "// INITIAL PAGE LOAD"
+
+// =================================================================
+// THEME TOGGLE LOGIC
+// =================================================================
+const themeToggleBtn = document.getElementById('theme-toggle-btn');
+const themeToggleIcon = document.getElementById('theme-toggle-icon');
+const themeToggleText = document.getElementById('theme-toggle-text');
+
+const applyTheme = (theme) => {
+    if (theme === 'dark') {
+        document.documentElement.classList.add('dark');
+        themeToggleIcon.className = 'fas fa-sun';
+        themeToggleText.textContent = 'Light Mode';
+    } else {
+        document.documentElement.classList.remove('dark');
+        themeToggleIcon.className = 'fas fa-moon';
+        themeToggleText.textContent = 'Dark Mode';
+    }
+};
+
+themeToggleBtn.addEventListener('click', () => {
+    const currentTheme = localStorage.getItem('theme') || 'dark';
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    localStorage.setItem('theme', newTheme);
+    applyTheme(newTheme);
+});
+
+// GANTI SELURUH BLOK "MUSIC PLAYER LOGIC" ANDA DENGAN YANG INI
+
+// =================================================================
+// MUSIC PLAYER LOGIC (Chrome-Optimized)
+// =================================================================
+const modernFolderPicker = document.getElementById('modern-folder-picker');
+const audioPlayer = document.getElementById('audio-player');
+const playerContainer = document.getElementById('player-container');
+const playlistEl = document.getElementById('playlist');
+const currentTrackInfo = document.getElementById('current-track-info');
+const playPauseBtn = document.getElementById('play-pause-btn');
+const prevBtn = document.getElementById('prev-btn');
+const nextBtn = document.getElementById('next-btn');
+
+// Mini Player Elements
+const miniPlayer = document.getElementById('mini-player');
+const miniPlayerTrackName = document.getElementById('mini-player-track-name');
+const miniPlayerPlayPauseBtn = document.getElementById('mini-player-play-pause-btn');
+const miniPlayerPrevBtn = document.getElementById('mini-player-prev-btn');
+const miniPlayerNextBtn = document.getElementById('mini-player-next-btn');
+
+let playlist = [];
+let currentTrackIndex = 0;
+const audioTypes = ['mp3', 'wav', 'ogg', 'm4a', 'flac'];
+
+// --- Fungsi Inti ---
+const processFiles = (files) => {
+    if (!files || files.length === 0) return;
+
+    playlist = Array.from(files)
+        .filter(file => audioTypes.some(type => file.name.toLowerCase().endsWith(type)))
+        .map(file => ({
+            name: file.name.replace(/\.[^/.]+$/, ""),
+            url: URL.createObjectURL(file)
+        }));
+    
+    if (playlist.length > 0) {
+        playerContainer.classList.remove('hidden');
+        miniPlayer.classList.remove('hidden');
+        renderPlaylist();
+        loadTrack(0);
+        audioPlayer.play();
+    } else {
+        Swal.fire({
+            icon: 'error',
+            title: 'Tidak Ditemukan',
+            text: 'Tidak ada file audio yang didukung dalam folder yang Anda pilih.',
+            background: '#1e293b',
+            color: '#fff'
+        });
+    }
+};
+
+// --- Logika untuk Tombol Pilih Folder ---
+modernFolderPicker.addEventListener('click', async () => {
+    try {
+        const dirHandle = await window.showDirectoryPicker();
+        const filePromises = [];
+        for await (const entry of dirHandle.values()) {
+            if (entry.kind === 'file') {
+                filePromises.push(entry.getFile());
+            }
+        }
+        const files = await Promise.all(filePromises);
+        processFiles(files);
+    } catch (err) {
+        console.log("Pemilihan folder dibatalkan atau error:", err);
+    }
+});
+
+const loadTrack = (index) => {
+    if (playlist.length === 0) return;
+    currentTrackIndex = index;
+    const track = playlist[currentTrackIndex];
+    audioPlayer.src = track.url;
+    currentTrackInfo.textContent = track.name;
+    miniPlayerTrackName.textContent = track.name;
+    updatePlaylistUI();
+};
+
+const renderPlaylist = () => {
+    playlistEl.innerHTML = '';
+    if (playlist.length === 0) {
+        playlistEl.innerHTML = '<p class="text-gray-500 text-center">Pilih musik untuk menampilkan playlist.</p>';
+        return;
+    }
+    
+    playlist.forEach((track, index) => {
+        const item = document.createElement('div');
+        item.className = 'p-3 rounded-md cursor-pointer hover:bg-slate-700 flex items-center gap-3 transition-colors';
+        item.innerHTML = `<i class="fas fa-music text-indigo-400"></i> <span class="flex-grow truncate">${track.name}</span>`;
+        item.addEventListener('click', () => {
+            loadTrack(index);
+            audioPlayer.play();
+        });
+        item.dataset.index = index;
+        playlistEl.appendChild(item);
+    });
+};
+
+const updatePlaylistUI = () => {
+    const items = playlistEl.querySelectorAll('div[data-index]');
+    items.forEach(item => {
+        if (parseInt(item.dataset.index) === currentTrackIndex) {
+            item.classList.add('bg-indigo-600', 'text-white');
+            item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        } else {
+            item.classList.remove('bg-indigo-600', 'text-white');
+        }
+    });
+};
+
+const togglePlayPause = () => {
+     if (audioPlayer.paused && audioPlayer.src) {
+        audioPlayer.play();
+    } else {
+        audioPlayer.pause();
+    }
+};
+
+const playNext = () => {
+    if (playlist.length === 0) return;
+    currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+    loadTrack(currentTrackIndex);
+    audioPlayer.play();
+};
+
+const playPrev = () => {
+    if (playlist.length === 0) return;
+    currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
+    loadTrack(currentTrackIndex);
+    audioPlayer.play();
+};
+
+// --- Event Listeners & Sinkronisasi UI ---
+playPauseBtn.addEventListener('click', togglePlayPause);
+miniPlayerPlayPauseBtn.addEventListener('click', togglePlayPause);
+nextBtn.addEventListener('click', playNext);
+miniPlayerNextBtn.addEventListener('click', playNext);
+prevBtn.addEventListener('click', playPrev);
+miniPlayerPrevBtn.addEventListener('click', playPrev);
+audioPlayer.addEventListener('ended', playNext);
+
+const syncPlayPauseIcons = (paused) => {
+    const iconClass = paused ? 'fa-play' : 'fa-pause';
+    playPauseBtn.innerHTML = `<i class="fas ${iconClass}"></i>`;
+    miniPlayerPlayPauseBtn.innerHTML = `<i class="fas ${iconClass}"></i>`;
+};
+
+audioPlayer.addEventListener('play', () => syncPlayPauseIcons(false));
+audioPlayer.addEventListener('pause', () => syncPlayPauseIcons(true));
+
+
+        // =================================================================
+        // INITIAL PAGE LOAD
+        // =================================================================
+        
+        // ... di dalam // INITIAL PAGE LOAD
+
+// Terapkan tema yang tersimpan saat memuat halaman
+const savedTheme = localStorage.getItem('theme') || 'dark';
+applyTheme(savedTheme);
+
+        
+        document.getElementById('date').value = getTodayDateString();
+        renderDashboard();
+        initializeAbsenPage();
+        addCalculatorItem();
+        renderSavings();
+    });
+    </script>
+</body>
+</html>
